@@ -1,3 +1,7 @@
+/*Name:Alejandro Rodriguez Arias
+  Login: alejandro.rodriguez.arias
+  Name: Jacobo Bouzas Quiroga
+  Login: jacobo.bouzas.quiroga*/
 #include "bst.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,7 @@
+/*Name:Alejandro Rodriguez Arias
+  Login: alejandro.rodriguez.arias
+  Name: Jacobo Bouzas Quiroga
+  Login: jacobo.bouzas.quiroga*/
 #ifndef bst_H_
 #define bst_H_
 #include <stdbool.h>
