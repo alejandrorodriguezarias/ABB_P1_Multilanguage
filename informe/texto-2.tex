@@ -63,7 +63,7 @@
 \title{Deseño de Linguaxes de Programación}
 \subtitle{Work report for languages C, Java, Ruby and OCaml}
 \author{Rodríguez Arias, Alejandro\\
-	\texttt{@udc.es}
+	\texttt{alejandro.rodriguez.arias@udc.es}
 	\and Bouzas Quiroga, Jacobo\\
 	\texttt{jacobo.bouzas.quiroga@udc.es}}
 
@@ -84,11 +84,12 @@
 
 \section{Introduction}
 
-This document is meant to display the work made on implementing the same data structure, a binary search tree, and associated algorithms in an array of assorted programming languages.
+This document is meant to display the work made on implementing the same data structure, a binary search tree, and associated algorithms in an array of assorted programming languages, following a reference Pascal implementation.
 
 \section{Language: C}
 
 \begin{description}[align=left,labelwidth=10em]
+\item [Language Version] GNU C90
 \item [Compiler] GCC 5.4.0
 \item [Operating System] Ubuntu 16.04.2 LTS 64 bits
 \end{description}
@@ -124,6 +125,8 @@ C needs two files to make a library: a code file (.c) and a header file (.h). Th
 Pascal has the header and source code in the same file.
 
 \section{Language: Java}
+
+
 \section{Language: Ruby}
 
 \begin{description}[align=left,labelwidth=10em]
@@ -159,7 +162,7 @@ Pascal has a \texttt{VAR} keyword to pass arguments by reference but in Ruby `pa
 	Therefore Ruby functions return the modified input parameter so setting the input argument on the new function in order to update it correctly is needed.
 	We have to do it that way because when the input argument is an empty tree we need to reassign it to a new node. This logic is maintained in the whole code.
 	
-\subsection*{Diferences within the recursive remove function}
+\subsection*{Differences within the recursive remove function}
 
 In the recursive remove function a nested function is declared, but Ruby doesn't allow nested function so it can't use the local variables of the function that contains it. We have to pass a variable called aux as an input parameter. Besides a reference to the node is passed as an input parameter in order to avoid losing the original node reference, since aux is being changed to always be the father of the leaf node and so the value of its child (leaf node) is changed into \texttt{null}.
  
@@ -169,4 +172,32 @@ Ruby's module is a class that can't be instaced or have instance methods which c
 
 \section{Language: OCaml}
 
+\begin{description}[align=left,labelwidth=10em]
+\item [Language Version] OCaml 4.02.3
+\item [Interpreter] The OCaml toplevel, version 4.02.3
+\item [Operating System] Debian GNU/Linux 9
+\end{description}
+
+Objective Caml, developed by INRIA, is the main implementation of the Caml programming language and it's a multiparadigm language which allows for object orientation, functional and imperative constructs while featuring lazy evaluation and strong static inferred typing. It can be both compiled and interpreted. Caml is, in turn, a member of the ML family of programming languages.
+
+Some prominent features of OCaml include a static type system, type inference, parametric polymorphism, tail recursion, pattern matching, first class lexical closures, functors, exception handling, and automatic garbage collection and polish notation on function application. The provided compiler is optimized for execution speed, making it able to compete with lower level languages in terms of efficiency of the resulting code.
+
+\subsection*{Memory Management}
+
+The OCaml language has fully automatic memory management and garbage collection. On implementing the binary search tree, mutable types where used, specifically the \texttt{ref} type, which is the standard way to handle object references in OCaml. \texttt{ref}s are similar to Pascal pointers but don't allow for \texttt{null} values. \texttt{ref}s are overwritten with the \texttt{:=} operator and accessed through the \texttt{!} operator. A tree type was defined as a tuple containing a value and two references to similar trees in the following manner:
+
+\texttt{type int abb = Null | Node of (int * int abb ref * int abb ref);;} 
+
+This type can express the values \texttt{Null}, in the case of an empty tree, and \texttt{Node (int, ref, ref)} for an existing tree.
+
+\subsection*{Differences with Pascal implementation}
+
+Modifications to mutable OCaml types are permanent. Because of this, our `pointers' behave in a way similar to Pascal's \texttt{var} arguments. Directing a reference to a different object from inside a function will be reflected in the caller's scope so function headers can be adapted from Pascal practically verbatim.
+
+In the imperative version of the deletion function a very slight change was introduced to ease the readability of the resulting code. Where the number of subtrees of the current node is calculated in the original code in order to choose an execution branch with a \texttt{switch-case} construct, an OCaml pattern-matching was placed instead, avoiding the need to calculate this number explicitly. Pattern-matching was also used in small auxiliary functions from the specification as it was deemed the most natural way to write them in OCaml.
+
+\subsection*{Improvement}
+The recursive nature of binary search trees make them an ideal candidate for a purely functional, immutable implementation; favored in the OCaml ecosystem. This would allow for cleaner code, as OCaml syntax leans heavily on the functional end of things through pattern-matching and similar mechanism, and also to take advantage of the tail-recursion capabilities provided by the compiler.
+
+A very simple change in the type definition is enough to make the developed module polymorphic, by substituting \texttt{int} with \texttt{'a} and adding the additional parameter where needed.
 \end{document}

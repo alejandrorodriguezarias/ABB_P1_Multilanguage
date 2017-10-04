@@ -1,4 +1,4 @@
-type 'a abb = Null | Node of ('a * 'a abb ref * 'a abb ref);;
+type abb = Null | Node of (int * abb ref * abb ref);;
 
 exception Invalid_arg;;
 
