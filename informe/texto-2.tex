@@ -58,12 +58,18 @@
 
 \usepackage{datetime}
 
+\usepackage{enumitem}
+
 \title{Deseño de Linguaxes de Programación}
 \subtitle{Work report}
 \author{Rodríguez Arias, Alejandro\\
 	\texttt{@udc.es}
 	\and Bouzas Quiroga, Jacobo\\
 	\texttt{jacobo.bouzas.quiroga@udc.es}}
+
+\makeatletter
+\@ifpackagelater{scrbase}{2014/12/12}{}{\def\scr@startsection{\@startsection}}
+\makeatother
 
 % fecha
 \newdate{release}{04}{10}{2017}
@@ -81,6 +87,50 @@
 This document is meant to display the work made on implementing the same data structure, a binary search tree, and associated algorithms in an array of assorted programming languages.
 
 \section{Language: C}
+
+\begin{description}[align=left,labelwidth=10em]
+\item [Compiler] GCC 5.4.0
+\item [Operating System] Ubuntu 16.04.2 LTS 64 bits
+\end{description}
+
+C is an imperative procedural programming language that supports structured programming and recursion. C has a weak and static typing and provides a low-level access to memory, allowing us to make a dinamic and manual memory management. C gives us a lot of control flow tools for our problem:
+
+\begin{itemize}  
+\item Executing a set of statements only if some condition is met (\texttt{if-else}).
+\item Executing a set of statements zero or more times, until some condition is met (\texttt{while(condition)}). 
+\item Allows a variable to be tested for equality against a list of values. Each value is called a case, and the variable being switched on is checked for each (\texttt{switch-case}).
+\item Executing a set of distant statements, after which the flow of control usually returns (subroutines).
+\end{itemize}
+
+The C library \texttt{stdlib} provides us  functions to make a manual memory management of the dinamic memory. In our problem we use two of that functions:
+\begin{itemize}
+\item The \texttt{malloc(size)} function allocates “size” bytes and returns a pointer to the allocated memory.
+\item The \texttt{free} function frees the memory space pointed by the pointer.
+\end{itemize}
+	
+For the data structure we use \texttt{struct}. A user defined data type available in C that allows to combine data items of different kinds. Structures are used to represent a record. 
+
+\subsection*{Memory Management}
+
+The main differences when it comes to adapt Pascal code to C code are Pascal abstractions in memory management and reference parameters, since C has a lower level memory management.
+
+	To inicialize a pointer in Pascal is enough to call the "new" function with the pointer as a parameter, but in order to initialize a pointer in C
+	setting the pointer to the returned value of the "malloc" function is needed. The "malloc" function requires the size of the pointer in bytes to allocate
+	the memory.
+
+Differences within reference parameters
+
+	Pascal has a "VAR" keyword to pass arguments by reference but in C language every argument is passed by value, so passing a pointer to the memory address
+	of the argument is needed in order to modify it.
+
+
+
+Unit in C
+
+
+	C needs two files to make a library: a code file (.c) and a header file (.h). The header file provides a program with library functions.
+	Pascal has the header and source code in the same file.
+
 \section{Language: Java}
 \section{Language: Ruby}
 \section{Language: OCaml}
