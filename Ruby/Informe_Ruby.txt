@@ -1,0 +1,42 @@
+Ruby 2.4.2
+Interpreter: IRB (Interactive Ruby Shell) 0.9.6
+Operating System: MS Windows 10 Education 64 bits
+
+Ruby is a scripting, imperative, reflective, object-oriented programming language with a strong and dynamic typing. Dynamic memory management is automatic.
+
+Ruby give us a lot of control flow tools for our problem:
+
+	Executing a set of statements only if some condition is met (If-Then-Else).
+	Executing a set of statements zero or more times, until some condition is met (While(condition)).
+	Allows a variable to be tested for equality against a list of values. Each value is called a case, and the variable being switched on is checked 
+	for each (Case).
+	
+Ruby dynamic memory management is done with an automatic garbage recolector that frees memory when it's unused.
+
+For the data structure we use a constant struct with the necessary fields for our problem. All structures on our code are created by that constant struct.
+
+In Ruby, type data declarations aren't done in compiling time: they are assigned during run time so we don't need to create any type in order to solve
+our problem (excluding tNodeT struct).
+
+Differences within reference parameters
+
+Pascal has a "VAR" keyword to pass arguments by reference but in in Ruby "pass by object reference" is used:
+
+	Inside the function, any of the object's members can have new values assigned to them and these changes will persist after the function returns.
+	Inside the function, assigning a whole new object to the variable causes the variable to stop referencing the old object. But after the function returns, the 
+	original variable will still reference the old object.
+
+	Therefore Ruby functions return the modified input parameter so setting the input argument on the new function in order to update it correctly is needed.
+	We have to do it that way because when the input argument is an empty tree we need to reassign it to a new node. This logic is maintained in the whole code.
+	
+Diferences within the recursive remove function
+
+	In the recursive remove function a nested function is declared, but Ruby doesn't allow nested function so it can't use the local variables of the function
+	that contains it. We have to pass a variable called aux as an input parameter. Besides a reference to the node is passed as an input parameter in order to
+	avoid losing the original node reference, since aux is being changed to always be the father of the leaf node and so the value of its child (leaf
+	node) is changed into null.
+ 
+Improvement
+
+Ruby's module is a class that can't be instaced or have instance methods which complicates the management of the nodes. If we use a class instantiable
+for the management of nodes it would be easy to modify the values with getters and setters, simplifying the program logic.
