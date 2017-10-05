@@ -3,6 +3,8 @@
   Name: Jacobo Bouzas Quiroga
   Login: jacobo.bouzas.quiroga*/
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "bst.h"
 void display (tBST tree){
 
@@ -20,47 +22,77 @@ void display (tBST tree){
 	}
 	printf(")");	
 }
+void menuKeyInsert(tBST* tree){
+	int value;
+	char read[60];	
+	printf("Insert key value\n");
+	gets(read);
+	value = atoi(read);
+	keyInsert(tree, value);
+	printf("Done\n");
 
-int main()
-{
+}
+void menuKeySearch(tBST tree){
+	int value;
+	char read[60];
+	printf("Insert key value");
+	gets(read);
+	value = atoi(read);
+	if (keySearch(tree,value)==NULL){
+		printf("Key not found\n");
+	}else {
+		printf("searching %s...%i\n", value, root(keySearch(tree,value)));
+	}
+
+}
+
+void menuKeyRemove(tBST *tree){
+	int value;
+	char read[60];
+	printf("Insert key value\n");
+	gets(read);
+	value = atoi(read);
+	keyRemove(tree, value);
+	printf("Done\n");
+
+}
+void menu() {
+
+	int option;
+	char read[1];
 	tBST tree;
 	emptyTree(&tree);
-	keyInsert(&tree, 4);
-	keyInsert(&tree, 4);
-	keyInsert(&tree, 2);
-	keyInsert(&tree, 6);
-	keyInsert(&tree, 1);
-	keyInsert(&tree, 3);
-	keyInsert(&tree, 5);
-	keyInsert(&tree, 7);
+	bool noexit = true;
+	while(noexit){
 
-	display(tree);
-	printf("\n");
+		printf("0. Exit\n");
+		printf("1. Key Insert\n");
+		printf("2. Key Search\n");
+		printf("3. Key Remove\n");
+		printf("4.Tree Display\n");
+		gets(read);
+		option = atoi(read);
 
-	printf("searching 1...%i\n", root(keySearch(tree,1)));
-   	printf("searching 2...%i\n", root(keySearch(tree,2)));
-   	printf("searching 3...%i\n", root(keySearch(tree,3)));
-   	printf("searching 4...%i\n", root(keySearch(tree,4)));
-   	printf("searching 5...%i\n", root(keySearch(tree,5)));
-   	printf("searching 6...%i\n", root(keySearch(tree,6)));
-   	printf("searching 7...%i\n", root(keySearch(tree,7)));
+		switch (option){
+	
+			case 1: menuKeyInsert(&tree);
+				break;
+			case 2: menuKeySearch(tree);
+				break;
+			case 3: menuKeyRemove(&tree);
+				break;
+			case 4: display(tree);
+				printf("\n");
+				break;
+			case 0: noexit=false;
+				break;
 
-	printf("deleting 5...");			       
-   	keyRemove(&tree, 5);
-   	display(tree); printf("\n");
-
-   	printf("deleting 6...");			       
-   	keyRemove(&tree,6);
-   	display(tree); printf("\n");
-
-   	printf("deleting 4...");			       
-   	keyRemove(&tree,4);
-   	display(tree); printf("\n");
-
-   	printf("deleting 2...");			       
-   	keyRemove(&tree,2);
-   	display(tree); printf("\n");
-
+		}
+	}
+}
+int main()
+{
+	menu();
 	return(0);
 
 }
