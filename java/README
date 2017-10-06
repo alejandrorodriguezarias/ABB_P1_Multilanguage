@@ -1,0 +1,4 @@
+Se compila con make
+
+make test - ejecuta test de unidad automatizados (script test)
+make clean - limpia los archivos de la compilación
