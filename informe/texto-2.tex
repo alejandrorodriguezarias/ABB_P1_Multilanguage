@@ -134,15 +134,18 @@ Pascal has the header and source code in the same file.
 \item [Operating System] Debian GNU/Linux 9
 \end{description}
 
-Java is an object oriented language designed to run in an execution enviroment known as the Java Virtual Machine. This trait allows for compiled Java code to run regardless of underlying processor architecture as long as an instance of this virtual machine can be executed. Java is strongly typed with an static, nominative type system. In Java, arguments are passed-by-value only. It allows polymorphism through its generics system, reflection through an specific API and just recently started supporting a mild form of functional programming.
+Java is an object oriented, imperative language designed to run in an execution enviroment known as the Java Virtual Machine. This trait allows for compiled Java code to run regardless of underlying processor architecture as long as an instance of this virtual machine can be executed. Java is strongly typed with an static, nominative type system. In Java, arguments are passed-by-value only. It allows polymorphism through its generics system, reflection through an specific API and just recently started supporting a mild form of functional programming.
 
 \subsection*{Implementation of binary search tree}
 
-The data structure for the tree was design using available constructs. Instead of a record type, a class was used with three fields corresponding with an integer value and two references to the class itself, one for each brach. Since Java has completely automatic memory managment through garbage collection, inicialization of objects automatically allocates required memory that is freed at random times once it is no longer referred to by the program.
+The data structure for the tree was design using available constructs. Instead of a record type, a class was used with three fields corresponding with an integer value and two references to the class itself, one for each brach. Since Java has completely automatic memory managment through garbage collection, inicialization of objects automatically allocates required memory that is freed at random times once it is no longer referred to by the program. Both a \texttt{null} value and an instantiated object with a \texttt{null} key were considered as empty trees, taking appropiate steps to remedy it (i.e. conditional instantiation) in places of the code that could try to access values from an immediate \texttt{null} tree.
 
-Passed-by-value only arguments were troublesome during implementation. Some Pascal procedures in the reference implementation rely on their ability to use referenced input arguments as output arguments. This is impossible in Java, so full replacement of all three values inside a node by appropriate values was used wherever it was the case. For the same reason, it was necessary sometimes to add an additional parent argument to some functions that required edition of the relationship between parent nodes and their children.
+Passed-by-value only arguments were the most troublesome feature while trying to keep close to the original code. Some Pascal procedures in the reference implementation rely on their ability to use referenced input arguments as output arguments. This is impossible in Java, so full replacement of all three values inside a node by appropriate values was used wherever it was the case. For the same reason, it was necessary sometimes to add an additional parent argument to some functions that required edition of the relationship between parent nodes and their children.
 
 Other notable difference in implementation arises in the definition of the \texttt{sup2()} recursive function. The Pascal implementation defines this as a nested function inside the \texttt{eliminar\_r} function. However, Java isn't equipped with a nested function concept, forcing for an independent auxiliary function and for the only variable present across the scope of both subrutines to be passed as an argument to the \texttt{sup2()} function.
+
+\subsection*{Improvements}
+Java `generics' could be used to define a polymorphic implementation. A more Java-inclined implementation could be made as long as original function headers are not respected and usual object accessors are used and this would slightly simplify the code too.
 
 \section{Language: Ruby}
 
