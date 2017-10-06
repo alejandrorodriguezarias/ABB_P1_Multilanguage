@@ -1,3 +1,8 @@
+(*
+* Jacobo Bouzas Quiroga - jacobo.bouzas.quiroga@udc.es
+* Alejandro Rodríguez Arias - alejandro.rodriguez.arias@udc.es
+*)
+
 open Abb;;
 open Printf;;
 

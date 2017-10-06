@@ -1,3 +1,8 @@
+(*
+* Jacobo Bouzas Quiroga - jacobo.bouzas.quiroga@udc.es
+* Alejandro Rodríguez Arias - alejandro.rodriguez.arias@udc.es
+*)
+
 type abb = Null | Node of (int * abb ref * abb ref);;
 
 exception Invalid_arg;;
