@@ -1,7 +1,5 @@
 package abb;
 
-import abb.ABB;
-
 public class AbbProgram {
 	
 	private static final String USAGE = "Usage: test command \n"
@@ -15,7 +13,7 @@ public class AbbProgram {
 	}
 	
 	public static void main(String[] args) {
-		ABB<Integer> abb = new ABB<Integer>();
+		ABB abb = new ABB();
 		boolean erase = false;
 		
 		for(String a : args) {
@@ -24,15 +22,17 @@ public class AbbProgram {
 				erase = false;
 				break;
 			case "e": // erase
+				//System.err.println(abb);
 				erase = true;
 				break;
 			default:
 				try {
 					Integer i = Integer.parseInt(a);
-					if(erase)
-						abb.eliminarClave(i);
-					else
-						abb.insertarClave(i);
+					if(erase) {
+						ABB.eliminarClave(abb, i);
+						//System.err.println("[-" + i + "] " + abb);
+					} else
+						ABB.insertarClave(abb, i);
 				} catch (NumberFormatException e) {
 					System.err.println("Unrecognized input");
 					usage();

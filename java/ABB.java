@@ -1,192 +1,183 @@
 package abb;
 
-public class ABB<T extends Comparable<T>> {
+public class ABB {
 
-	private static class Node<U> {
-		public U key = null;
-		public Node<U> left = null;
-		public Node<U> right = null;
+	private Integer clave;
+	private ABB izdo, dcho;
+
+	/******************************************/
+
+	public void arbolVacio(final ABB a) {
+		a.clave = null;
+		a.izdo = null;
+		a.dcho = null;
 	}
 
-	private Node<T> root = null;
-
-	/*********************************************************/
-
-	/**
-	* Clears this ABB
-	*/
-	public void arbolVacio() {
-		root = null;
+	public ABB hijoIzquierdo() {
+		return izdo;
 	}
-	
-	/*********************************************************/
-	
-	private static <R extends Comparable<R>> void insertarClave_r(ABB<R> abb, R clave) {
-	
-		if(abb.esArbolVacio()) {
-			abb.root = new Node<R>();
-			abb.root.key = clave;
+
+	public ABB hijoDerecho() {
+		return dcho;
+	}
+
+	public int raiz() {
+		return clave;
+	}
+
+	/*
+	 * La función esArbolVacio se utiliza en lugar de comparar con null para
+	 * permitir el objeto creado pero sin datos asignados como árbol vacío.
+	 */
+	public static boolean esArbolVacio(ABB a) {
+		return (a == null) || (a.clave == null);
+	}
+
+	/******************************************/
+
+	private static void insertar_r(final ABB a, final int c) {
+		if (esArbolVacio(a)) {
+			a.clave = c;
+			a.izdo = null;
+			a.dcho = null;
+		} else if (c < a.raiz()) {
+			/*
+			 * Al no haber paso por referencia, tenemos que prevenir que la función
+			 * se llame sobre null instanciando las ramas antes de acceder a ellas.
+			 */
+			if(a.izdo == null) a.izdo = new ABB();
+			insertar_r(a.izdo, c);
+		} else if (c > a.raiz()) {
+			if(a.dcho == null) a.dcho = new ABB();
+			insertar_r(a.dcho, c);
+		}
+	}
+
+	private static void insertar_i(final ABB a, final int c) {
+
+		if (esArbolVacio(a)) {
+			a.clave = c;
 		} else {
-			int compareVal = clave.compareTo(abb.root.key);
-			if(compareVal < 0) {
-				ABB<R> hijo = abb.hijoIzquierdo();
-				insertarClave_r(hijo, clave);
-				if(abb.hijoIzquierdo().esArbolVacio())
-					abb.root.left = hijo.root; // if that was empty, we link it
-			} else if(compareVal > 0) {
-				ABB<R> hijo = abb.hijoDerecho();
-				insertarClave_r(hijo, clave);
-				if(abb.hijoDerecho().esArbolVacio())
-					abb.root.right = hijo.root; // same
-			} // else value is already on tree
-		}
-	}
-	
-	/**
-	* Inserts a key into this ABB
-	*/
-	public void insertarClave(T clave) {
-		insertarClave_r(this, clave);
-	}
+			ABB nuevo, padre, hijo;
+			nuevo = new ABB();
+			nuevo.clave = c;
 
-	/*********************************************************/
+			padre = null;
+			hijo = a;
+			while (!esArbolVacio(hijo) && (hijo.clave != c)) {
+				padre = hijo;
+				if (c < hijo.clave)
+					hijo = hijo.izdo;
+				else
+					hijo = hijo.dcho;
+			}
 
-	/**
-	* Returns left subtree
-	*/
-	public ABB<T> hijoIzquierdo() {
-		ABB<T> hijo = new ABB<T>();
-		if(root!=null) hijo.root = root.left;
-		return hijo;
-	}
-	
-	/*********************************************************/
-	
-	/**
-	* Returns right subtree
-	*/
-	public ABB<T> hijoDerecho() {
-		ABB<T> hijo = new ABB<T>();
-		if(root!=null) hijo.root = root.right;
-		return hijo;
-	}
-	
-	/*********************************************************/
-	
-	/**
-	* Returns root value of this tree
-	*/
-	public T Raiz() {
-		if(esArbolVacio()) return null;
-		return root.key;
-	}
-
-	/*********************************************************/
-	
-	/**
-	* Returns true if tree represents a leaf
-	*/
-	public boolean esNodoHoja() {
-		return !esArbolVacio()
-			&& hijoIzquierdo().esArbolVacio()
-			&& hijoDerecho().esArbolVacio();
-	}
-	
-	/*********************************************************/
-	
-	/**
-	* Returns true if this tree is empty, false otherwise
-	*/
-	public boolean esArbolVacio() {
-		return root == null;
-	}
-	
-	/*********************************************************/
-	
-	private static <R extends Comparable<R>> ABB<R> buscarClave_r(ABB<R> abb, R clave) {
-		if(abb.esArbolVacio()) return null;
-		if(clave==abb.Raiz()) return abb;
-		
-		if(clave.compareTo(abb.Raiz()) < 0) {
-			ABB<R> hijo = abb.hijoIzquierdo();
-			return buscarClave_r(hijo, clave);
-		} else {
-			ABB<R> hijo = abb.hijoDerecho();
-			return buscarClave_r(hijo, clave);
-		}
-	}
-	
-	/**
-	* Returns a subtree whose root is key or null if there's none
-	*/
-	public ABB<T> buscarClave(T clave) {
-		return buscarClave_r(this, clave);
-	}
-
-	/*********************************************************/	
-
-	private static <R extends Comparable<R>> void reemplazarSup(ABB<R> abb, ABB<R> padre, ABB<R> reemplazo) {
-		if(!reemplazo.hijoDerecho().esArbolVacio())
-			reemplazarSup(abb, reemplazo, reemplazo.hijoDerecho());
-		else {
-			abb.root.key = reemplazo.root.key;
-			padre.root.right = reemplazo.root.left;
-		}
-	}
-
-	private static <R extends Comparable<R>> void eliminarClave_r(ABB<R> abb, R clave) {
-		if(!abb.esArbolVacio()) {
-			int compareVal = clave.compareTo(abb.Raiz());
-			if(compareVal < 0) {
-				eliminarClave_r(abb.hijoIzquierdo(), clave);
-			} else if(compareVal > 0) {
-				eliminarClave_r(abb.hijoDerecho(), clave);
-			} else {
-				if(abb.hijoIzquierdo().esArbolVacio()) {
-					if(!abb.hijoDerecho().esArbolVacio()) {
-						abb.root.key = abb.hijoDerecho().root.key;
-						abb.root.left = abb.hijoDerecho().root.left;
-						abb.root.right = abb.hijoDerecho().root.right; // order matters here
-					} else {
-						abb.arbolVacio();
-					}
-				} else if(abb.hijoDerecho().esArbolVacio()) {
-					if(!abb.hijoIzquierdo().esArbolVacio()) {
-						abb.root.key = abb.hijoIzquierdo().root.key;
-						abb.root.right = abb.hijoIzquierdo().root.right;
-						abb.root.left = abb.hijoIzquierdo().root.left; // order matters here
-					} else {
-						abb.arbolVacio();
-					}
-				} else {
-					ABB<R> reemplazo = abb.hijoIzquierdo(); // we replace trees with two branches with maximum from left subtree
-					if(reemplazo.hijoDerecho().esArbolVacio()) { // if maximum is immediate left child
-						abb.root.key = reemplazo.root.key;
-						abb.root.left = reemplazo.root.left;
-					} else reemplazarSup(abb, abb, reemplazo); // if there are branches further right
-				}
+			if (esArbolVacio(hijo)) {
+				if (c < padre.clave)
+					padre.izdo = nuevo;
+				else
+					padre.dcho = nuevo;
 			}
 		}
 	}
-	
-	/**
-	* Removes key from tree
-	*/
-	public void eliminarClave(T clave) {
-		eliminarClave_r(this, clave);
+
+	private static ABB buscar_r(final ABB a, final int c) {
+		if (esArbolVacio(a))
+			return null;
+		else if (a.clave == c)
+			return a;
+		else if (c < a.clave)
+			return buscar_r(a.izdo, c);
+		else
+			return buscar_r(a.dcho, c);
 	}
 
-	/*********************************************************/	
+	private static ABB buscar_i(final ABB a, final int c) {
+		ABB nodo;
 
+		nodo = a;
+		while ((nodo != null) && (nodo.clave != c)) {
+			if (c < nodo.clave)
+				nodo = nodo.izdo;
+			else
+				nodo = nodo.dcho;
+		}
+
+		return nodo;
+	}
+
+	/*
+	 * Dado que no hay paso por referencia es necesario transportar un puntero al
+	 * padre a través de la función para poder eliminar las referencias al nodo de
+	 * la estructura.
+	 * 
+	 * Aux se pasa a la función como argumento ya que no hay un concepto de función
+	 * anidada en Java.
+	 */
+	private static void sup2(final ABB b, final ABB padre, final ABB aux) {
+		if (!esArbolVacio(b.dcho))
+			sup2(b.dcho, b, aux);
+		else {
+			aux.clave = b.clave;
+			/* comprobamos si es el nodo inmediatamente a la izquierda del
+			 * reemplazado para elegir la posición en la que pegamos la
+			 * rama izquierda del nodo candidato*/
+			if(padre != aux) padre.dcho = b.izdo;
+			else padre.izdo = b.izdo;
+		}
+	}
+
+	private static void eliminar_r(ABB a, final int c) {
+		if (!esArbolVacio(a))
+			if (c < a.clave)
+				eliminar_r(a.izdo, c);
+			else if (c > a.clave)
+				eliminar_r(a.dcho, c);
+			else {
+				/* al no haber paso por referencia es necesario "transplantar"
+				 * el nodo hijo correspondiente al nodo cuyo dato se elimina*/
+				if (esArbolVacio(a.izdo)) {
+					if(a.dcho == null) a.dcho = new ABB();
+					a.clave = a.dcho.clave;
+					a.izdo = a.dcho.izdo;
+					a.dcho = a.dcho.dcho; // aquí importa el orden
+				} else if (esArbolVacio(a.dcho)) {
+					a.clave = a.izdo.clave;
+					a.dcho = a.izdo.dcho;
+					a.izdo = a.izdo.izdo; // y aquí
+				} else
+					sup2(a.izdo, a, a);
+			}
+	}
+
+	private static void eliminar_i(final ABB a, final int c) {
+		
+	}
+
+	/******************************************/
+
+	public static void insertarClave(final ABB a, final int c) {
+		insertar_r(a, c);
+	}
+
+	public static ABB buscarClave(final ABB a, final int c) {
+		return buscar_r(a, c);
+	}
+
+	public static void eliminarClave(ABB a, int c) {
+		eliminar_r(a, c);
+	}
+	
+	/******************************************/
+	
 	@Override
 	public String toString() {
-		if(esNodoHoja())
-			return String.format("(%s)", Raiz().toString());
-		else if(!esArbolVacio())
-			return String.format("(%s %s %s)",
-				Raiz().toString(),
-				hijoIzquierdo(),
-				hijoDerecho());
-		return "()";
+		if(esArbolVacio(this)) return "()";
+		String i = izdo == null ? "()" : izdo.toString();
+		String d = dcho == null ? "()" : dcho.toString();
+		return "("
+				+ raiz()
+				+ (esArbolVacio(izdo) && esArbolVacio(dcho) ? "" : " " + i + " " + d)
+				+ ")";
 	}
 }

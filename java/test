@@ -37,7 +37,7 @@ ANSWERS=('(0)'\
 	'(5)'\
 	'(1)'\
 	'(1 () (3))'\
-	'(1 () (0))'\
+	'(0 () (1))'\
 	'(2 (0) (4 () (7)))')
 
 for t in "${!TESTS[@]}"
@@ -51,10 +51,12 @@ do
 		then
 			echo "Test $t: ${TESTS[$t]} passed."
 			echo "Answer was $output."
+			echo ""
 		else
 			echo "Test $t: ${TESTS[$t]} failed."
 			echo "Answer was $output"
 			echo "Expected answer was ${ANSWERS[$t]}."
+			echo ""
 		fi
 	else
 		echo "Test $t: ${TESTS[$t]} returned error."
