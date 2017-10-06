@@ -57,8 +57,10 @@
 \subsectionfont{\rmfamily}
 
 \usepackage{datetime}
-
 \usepackage{enumitem}
+\usepackage{textcomp}
+
+\newcommand{\vctilde}{\raisebox{0.5ex}{\texttildelow}}
 
 \title{Deseño de Linguaxes de Programación}
 \subtitle{Work report for languages C, Java, Ruby and OCaml}
@@ -111,7 +113,7 @@ The C library \texttt{stdlib} provides us  functions to make a manual memory man
 	
 For the data structure we use \texttt{struct}. A user defined data type available in C that allows to combine data items of different kinds. Structures are used to represent a record. 
 
-\subsection*{Memory Management}
+\subsection*{Memory management}
 
 The main differences when it comes to adapt Pascal code to C code are Pascal abstractions in memory management and reference parameters, since C has a lower level memory management. To inicialize a pointer in Pascal is enough to call the \texttt{new} function with the pointer as a parameter, but in order to initialize a pointer in C setting the pointer to the returned value of the \texttt{malloc} function is needed. The \texttt{malloc} function requires the size of the pointer in bytes to allocate the memory.
 
@@ -126,6 +128,21 @@ Pascal has the header and source code in the same file.
 
 \section{Language: Java}
 
+\begin{description}[align=left,labelwidth=10em]
+\item [Language Version] Java 8 SE
+\item [Compiler] Open JDK 8u141-b15-1\vctilde deb9u1
+\item [Operating System] Debian GNU/Linux 9
+\end{description}
+
+Java is an object oriented language designed to run in an execution enviroment known as the Java Virtual Machine. This trait allows for compiled Java code to run regardless of underlying processor architecture as long as an instance of this virtual machine can be executed. Java is strongly typed with an static, nominative type system. In Java, arguments are passed-by-value only. It allows polymorphism through its generics system, reflection through an specific API and just recently started supporting a mild form of functional programming.
+
+\subsection*{Implementation of binary search tree}
+
+The data structure for the tree was design using available constructs. Instead of a record type, a class was used with three fields corresponding with an integer value and two references to the class itself, one for each brach. Since Java has completely automatic memory managment through garbage collection, inicialization of objects automatically allocates required memory that is freed at random times once it is no longer referred to by the program.
+
+Passed-by-value only arguments were troublesome during implementation. Some Pascal procedures in the reference implementation rely on their ability to use referenced input arguments as output arguments. This is impossible in Java, so full replacement of all three values inside a node by appropriate values was used wherever it was the case. For the same reason, it was necessary sometimes to add an additional parent argument to some functions that required edition of the relationship between parent nodes and their children.
+
+Other notable difference in implementation arises in the definition of the \texttt{sup2()} recursive function. The Pascal implementation defines this as a nested function inside the \texttt{eliminar\_r} function. However, Java isn't equipped with a nested function concept, forcing for an independent auxiliary function and for the only variable present across the scope of both subrutines to be passed as an argument to the \texttt{sup2()} function.
 
 \section{Language: Ruby}
 
@@ -144,7 +161,7 @@ Ruby is an scripting, imperative, reflective, object-oriented programming langua
 \item Executing a set of distant statements, after which the flow of control usually returns (subroutines).
 \end{itemize}
 
-\subsection*{Memory Management}
+\subsection*{Memory management}
 
 Ruby dynamic memory management is done with an automatic garbage colector that frees allocated memory when it's unused. For the data structure we use a constant \texttt{Struct} with the necessary fields for our problem. All structures on our code are created by that constant struct.
 
@@ -182,7 +199,7 @@ Objective Caml, developed by INRIA, is the main implementation of the Caml progr
 
 Some prominent features of OCaml include a static type system, type inference, parametric polymorphism, tail recursion, pattern matching, first class lexical closures, functors, exception handling, and automatic garbage collection and polish notation on function application. The provided compiler is optimized for execution speed, making it able to compete with lower level languages in terms of efficiency of the resulting code.
 
-\subsection*{Memory Management}
+\subsection*{Memory management}
 
 The OCaml language has fully automatic memory management and garbage collection. On implementing the binary search tree, mutable types where used, specifically the \texttt{ref} type, which is the standard way to handle object references in OCaml. \texttt{ref}s are similar to Pascal pointers but don't allow for \texttt{null} values. \texttt{ref}s are overwritten with the \texttt{:=} operator and accessed through the \texttt{!} operator. A tree type was defined as a tuple containing a value and two references to similar trees in the following manner:
 
