@@ -151,21 +151,71 @@ public class ABB {
 	}
 
 	private static void eliminar_i(final ABB a, final int c) {
+		ABB pSup = null;
+		ABB sup = a;
+		while (!esArbolVacio(a) && sup.clave != c) {
+			pSup = sup;
+			if(c < sup.clave)
+				sup = sup.izdo;
+			else sup = sup.dcho;
+		}
 		
+		if(sup != null) {
+			int numHijos = 0;
+			numHijos += esArbolVacio(sup.izdo) ? 0 : 1;
+			numHijos += esArbolVacio(sup.dcho) ? 0 : 1;
+			
+			switch (numHijos) {
+			case 0:
+				if(esArbolVacio(pSup)) {
+					a.clave = null;
+					a.dcho = null;
+					a.izdo = null;
+				} else if(pSup.izdo==sup) {
+					pSup.izdo = null;
+				} else {
+					pSup.dcho = null;
+				}
+				break;
+			case 1:
+				ABB hijoNoVacio = esArbolVacio(sup.izdo) ? sup.dcho : sup.izdo;
+				if(esArbolVacio(pSup)) {
+					a.clave = hijoNoVacio.clave;
+					a.dcho = hijoNoVacio.dcho;
+					a.izdo = hijoNoVacio.izdo;
+				} else if (pSup.izdo == sup) pSup.izdo = hijoNoVacio;
+				else pSup.dcho = hijoNoVacio;
+				break;
+			case 2:
+				pSup = sup;
+				ABB sucIzMax = sup.izdo;
+				while (!esArbolVacio(sucIzMax.dcho)) {
+					pSup = sucIzMax;
+					sucIzMax = sucIzMax.dcho;
+				}
+				
+				sup.clave = sucIzMax.clave;
+				if(pSup == sup) pSup.izdo = sucIzMax.izdo;
+				else pSup.dcho = sucIzMax.izdo;
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	/******************************************/
 
 	public static void insertarClave(final ABB a, final int c) {
-		insertar_r(a, c);
+		insertar_i(a, c);
 	}
 
 	public static ABB buscarClave(final ABB a, final int c) {
-		return buscar_r(a, c);
+		return buscar_i(a, c);
 	}
 
 	public static void eliminarClave(ABB a, int c) {
-		eliminar_r(a, c);
+		eliminar_i(a, c);
 	}
 	
 	/******************************************/
