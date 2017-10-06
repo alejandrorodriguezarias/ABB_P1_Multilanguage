@@ -142,7 +142,6 @@ let eliminar_i a c =
 				else pd := !(hijoDerecho !sucIzMax);
 				sup := !sucIzMax )
 
-
 let p = ref Null;;
 let test () =
 	insertar_i p 10;
