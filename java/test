@@ -17,7 +17,7 @@
 #  9 removals with miscellaneous depths
 #
 
-COMMAND="java -classpath .. abb.AbbProgram"
+COMMAND="java -classpath . AbbProgram"
 
 TESTS=(	'i 0'\
 	'i 0 0 1 0 1 1'\

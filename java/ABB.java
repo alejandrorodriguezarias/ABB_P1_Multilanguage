@@ -1,5 +1,7 @@
-package abb;
-
+/*
+* Jacobo Bouzas Quiroga - jacobo.bouzas.quiroga@udc.es
+* Alejandro Arias Rodríguez - alejandro.arias.rodriguez@udc.es
+*/
 public class ABB {
 
 	private Integer clave;

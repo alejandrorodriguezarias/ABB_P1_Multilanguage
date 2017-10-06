@@ -1,4 +1,7 @@
-package abb;
+/*
+* Jacobo Bouzas Quiroga - jacobo.bouzas.quiroga@udc.es
+* Alejandro Rodríguez Arias - alejandro.rodriguez.arias@udc.es
+*/
 
 public class AbbProgram {
 	
